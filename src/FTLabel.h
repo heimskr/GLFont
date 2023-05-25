@@ -1,9 +1,9 @@
 #pragma once
 
-#include "GL\glew.h"
+#include "GL/glew.h"
 #include "ft2build.h"
 #include FT_FREETYPE_H
-#include "glm\glm.hpp"
+#include "glm/glm.hpp"
 
 #include "GLFont.h"
 
@@ -110,7 +110,7 @@ private:
     FT_GlyphSlot _g;
 
     GLuint _programId;
-    GLuint _vao; 
+    GLuint _vao;
     GLuint _vbo;
 
     GLint _uniformTextureHandle;
@@ -137,13 +137,13 @@ private:
 
     // Label dimensions
     int _width;
-    int _height; 
+    int _height;
 
     // Used to scale x and y coords
     // Note: sx and sy are chosen so that one glyph pixel corresponds to one screen pixel
     float _sx;
     float _sy;
-    
+
     // Dimensions of atlas texture
     int _atlasWidth;
     int _atlasHeight;
@@ -160,7 +160,7 @@ private:
     int _indentationPix;
 
     bool _isInitialized;
-    
+
     // Used for debugging opengl only
     inline void getError() {
         const GLubyte* error = gluGetString(glGetError());

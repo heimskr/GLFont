@@ -21,7 +21,7 @@ void GLUtils::loadShader(char* shaderSource, GLenum shaderType, GLuint &programI
 
     if(!shaderFile.is_open()) {
         std::string error = "Error: could not read file ";
-        throw std::exception(error.append(shaderSource).c_str());
+        throw std::runtime_error(error.append(shaderSource));
     }
 
     // Read shader
@@ -35,9 +35,9 @@ void GLUtils::loadShader(char* shaderSource, GLenum shaderType, GLuint &programI
     // Compile shader
     printf("Compiling shader\n");
     glShaderSource(shaderId,        // Shader handle
-        1,               // Number of files
+        1,        // Number of files
         &shader,  // Shader source code
-        NULL);           // NULL terminated string
+        nullptr); // NULL terminated string
     glCompileShader(shaderId);
 
     // Check shader
