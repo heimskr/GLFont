@@ -1,13 +1,15 @@
 #pragma once
 
-#include "GL/glew.h"
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include "ft2build.h"
 #include FT_FREETYPE_H
 #include "glm/glm.hpp"
 
 #include "GLFont.h"
 
-#include <memory> // for use of shared_ptr
+#include <memory> // for use of std::shared_ptr
 #include <map>
 #include <vector>
 
@@ -22,8 +24,6 @@
 #ifndef DEG_TO_RAD
 #define DEG_TO_RAD PI / 180.0
 #endif
-
-using namespace std;
 
 class FontAtlas;
 
@@ -42,10 +42,10 @@ public:
     };
 
     // Ctor takes a pointer to a font face
-    FTLabel(shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight);
+    FTLabel(std::shared_ptr<GLFont> ftFace, int windowWidth, int windowHeight);
     FTLabel(GLFont* ftFace, int windowWidth, int windowHeight);
-    FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int width, int height, int windowWidth, int windowHeight);
-    FTLabel(shared_ptr<GLFont> ftFace, const char* text, float x, float y, int windowWidth, int windowHeight);
+    FTLabel(std::shared_ptr<GLFont> ftFace, const char* text, float x, float y, int width, int height, int windowWidth, int windowHeight);
+    FTLabel(std::shared_ptr<GLFont> ftFace, const char* text, float x, float y, int windowWidth, int windowHeight);
     ~FTLabel();
 
     void setWindowSize(int width, int height);
@@ -56,11 +56,11 @@ public:
     void scale(float x, float y, float z);
 
     // Setters
-    void setText(char* text);
-    void setText(string text);
+    void setText(const char *text);
+    void setText(const std::string &text);
     void setPosition(float x, float y);
     void setSize(int width, int height);
-    void setFont(shared_ptr<GLFont> ftFace);
+    void setFont(std::shared_ptr<GLFont> ftFace);
     void setColor(float r, float b, float g, float a); // RGBA values are 0 - 1.0
     void setAlignment(FontFlags alignment);
     void setPixelSize(int size);
@@ -69,7 +69,7 @@ public:
     void appendFontFlags(int flags);
 
     // Getters
-    string getText();
+    std::string getText();
     float getX();
     float getY();
     int getWidth();
@@ -86,7 +86,7 @@ public:
     void drawString(const char *text, float x, float y);
     // Overloaded method: params width and height specify bounding box of the text
     // - Pass 0 as the value for width and/or height to specify no limit
-    void drawString(const char* text, float x, float y, float width, float height);
+    void drawString(const char *text, float x, float y, float width, float height);
 
     void render();
 
@@ -104,7 +104,7 @@ private:
             x(x), y(y), s(s), t(t) {}
     };
 
-    shared_ptr<GLFont> _ftFace;
+    std::shared_ptr<GLFont> _ftFace;
     FT_Face _face;
     FT_Error _error;
     FT_GlyphSlot _g;
@@ -117,9 +117,9 @@ private:
     GLint _uniformTextColorHandle;
     GLint _uniformMVPHandle;
 
-    char* _text;
+    std::string _text;
 
-    vector<Point> _coords;
+    std::vector<Point> _coords;
 
     // Holds texture atlases for different character pixel sizes
     std::map<int, std::shared_ptr<FontAtlas>> _fontAtlas;
@@ -165,7 +165,7 @@ private:
     inline void getError() {
         const GLubyte* error = gluGetString(glGetError());
         if(error != GL_NO_ERROR)
-            printf("----------------------------- %i ----------------------", error);
+            printf("----------------------------- %s ----------------------", error);
     }
 
     // Compile shader from file
@@ -173,14 +173,14 @@ private:
     // Calculate offset needed for center- or left-aligned text
     void calculateAlignment(const char* text, float &x);
     // Split text into words separated by spaces
-    vector<string> splitText(const char* text);
+    std::vector<std::string> splitText(std::string_view text);
     // Returns the width (in pixels) of the string, given the current pixel size
     int calcWidth(const char* text);
 
     // Calculate vertices for a paragraph label
-    void recalculateVertices(const char* text, float x, float y, int width, int height);
+    void recalculateVertices(const char *text, float x, float y, int width, int height);
     // Calculate vertices without regards to width or height boundaries
-    void recalculateVertices(const char* text, float x, float y);
+    void recalculateVertices(const char *text, float x, float y);
 
     void recalculateMVP();
 };

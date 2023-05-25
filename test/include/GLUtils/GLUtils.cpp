@@ -9,7 +9,7 @@ GLUtils::GLUtils() {}
 
 GLUtils::~GLUtils() {}
 
-void GLUtils::loadShader(char* shaderSource, GLenum shaderType, GLuint &programId) {
+void GLUtils::loadShader(const char *shaderSource, GLenum shaderType, GLuint &programId) {
     GLuint shaderId = glCreateShader(shaderType);
 
     GLint result = GL_FALSE; // compilation result
